@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>สนใจทำความรู้จักกับเรามั้ยย!!</title>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&family=Mitr:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pink-light: #ffd6e7;
+    --pink-mid: #ffb3d1;
+    --pink-hot: #ff4d94;
+    --pink-deep: #e0185a;
+    --purple-soft: #c9b8e8;
+    --purple-mid: #9b72cf;
+    --lavender: #e8d5f5;
+    --gray-soft: #d4c5e2;
+    --white: #fff9fd;
+    --ocean-dark: #0a0820;
+    --ocean-mid: #1a1040;
+    --ocean-blue: #1e3a8a;
+    --ocean-purple: #4c1d95;
+    --glow-blue: #60a5fa;
+    --glow-purple: #a78bfa;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    width: 100%; height: 100%;
+    overflow: hidden;
+    font-family: 'Mali', 'Mitr', cursive;
+  }
+
+  /* ===================== PAGE SYSTEM ===================== */
+  .page {
+    position: fixed; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: opacity 0.8s cubic-bezier(0.4,0,0.2,1), transform 0.8s cubic-bezier(0.4,0,0.2,1);
+    will-change: opacity, transform;
+  }
+  .page.hidden { opacity: 0; pointer-events: none; transform: scale(1.04); }
+  .page.visible { opacity: 1; pointer-events: all; transform: scale(1); }
+
+  /* ===================== PAGE 1 ===================== */
+  #page1 {
+    background: linear-gradient(135deg, #ffeef6 0%, #fff0fb 30%, #fde8f5 60%, #fce4ff 100%);
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* Sparkle BG */
+  .sparkle-bg {
+    position: absolute; inset: 0; overflow: hidden; pointer-events: none;
+  }
+  .sparkle {
+    position: absolute;
+    width: 8px; height: 8px;
+    background: var(--pink-hot);
+    clip-path: polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);
+    animation: sparkleFloat linear infinite;
+    opacity: 0;
+  }
+  @keyframes sparkleFloat {
+    0%   { opacity:0; transform: translateY(0) rotate(0deg) scale(0.5); }
+    10%  { opacity:0.8; }
+    90%  { opacity:0.6; }
+    100% { opacity:0; transform: translateY(-110vh) rotate(720deg) scale(1.2); }
+  }
+
+  /* Bubbles BG */
+  .bubble {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), rgba(255,182,213,0.3));
+    border: 1.5px solid rgba(255,100,170,0.2);
+    animation: bubbleRise linear infinite;
+    opacity: 0;
+  }
+  @keyframes bubbleRise {
+    0%   { opacity: 0; transform: translateY(0) scale(1); }
+    15%  { opacity: 0.7; }
+    85%  { opacity: 0.5; }
+    100% { opacity: 0; transform: translateY(-100vh) scale(1.3); }
+  }
+
+  /* Top deco banner */
+  .top-deco {
+    position: absolute; top: 0; left: 0; right: 0;
+    height: clamp(48px, 10vw, 80px);
+    display: flex; align-items: center; justify-content: center;
+    gap: clamp(8px, 2vw, 18px);
+    z-index: 3; pointer-events: none;
+    background: linear-gradient(180deg, rgba(255,200,230,0.55) 0%, transparent 100%);
+    padding: 6px 0;
+  }
+  .top-deco-item {
+    font-size: clamp(18px, 4vw, 32px);
+    animation: topDecoFloat ease-in-out infinite;
+    opacity: 0.85;
+  }
+  .top-deco-item:nth-child(odd)  { animation-duration: 2.8s; }
+  .top-deco-item:nth-child(even) { animation-duration: 3.4s; animation-delay: 0.7s; }
+  @keyframes topDecoFloat {
+    0%,100% { transform: translateY(0) scale(1); }
+    50%     { transform: translateY(-6px) scale(1.12); }
+  }
+
+  /* Characters */
+  .char-container {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    display: flex; justify-content: space-between;
+    align-items: flex-end;
+    padding: 0; pointer-events: none;
+    z-index: 1;
+  }
+  .char-img {
+    width: clamp(150px, 30vw, 290px);
+    height: clamp(150px, 30vw, 290px);
+    object-fit: contain;
+    filter: drop-shadow(0 -6px 28px rgba(255,77,148,0.5));
+    animation: charBob 3.5s ease-in-out infinite;
+    display: block;
+    margin-bottom: -4px;
+  }
+  .char-img.left { margin-left: clamp(0px, 1vw, 12px); }
+  .char-img.right { animation-delay: 1.8s; margin-right: clamp(0px, 1vw, 12px); }
+  @keyframes charBob {
+    0%,100% { transform: translateY(0px); }
+    50% { transform: translateY(-16px); }
+  }
+
+  /* Floating mini hearts deco on page1 */
+  .mini-deco {
+    position: absolute; top: clamp(56px,12vw,96px); left: 0; right: 0;
+    display: flex; justify-content: space-between;
+    padding: 0 clamp(6px,2vw,20px);
+    pointer-events: none; z-index: 1;
+  }
+  .mini-deco-side {
+    display: flex; flex-direction: column; gap: clamp(8px,1.5vw,14px);
+    align-items: center;
+  }
+  .mini-icon {
+    font-size: clamp(14px,2.8vw,22px);
+    animation: miniFloat ease-in-out infinite;
+    opacity: 0.7;
+  }
+  .mini-icon:nth-child(1){ animation-duration:2.6s; }
+  .mini-icon:nth-child(2){ animation-duration:3.1s; animation-delay:0.5s; }
+  .mini-icon:nth-child(3){ animation-duration:2.3s; animation-delay:1.1s; }
+  @keyframes miniFloat {
+    0%,100%{ transform:translateY(0) rotate(-8deg); }
+    50%{ transform:translateY(-10px) rotate(8deg); }
+  }
+
+  /* Main card */
+  .main-card {
+    position: relative; z-index: 2;
+    text-align: center;
+    padding: clamp(28px, 5vw, 52px) clamp(28px, 7vw, 68px);
+    background: linear-gradient(160deg, rgba(255,255,255,0.82) 0%, rgba(255,230,245,0.78) 100%);
+    backdrop-filter: blur(18px);
+    border-radius: 36px;
+    border: 2px solid rgba(255,130,190,0.5);
+    box-shadow:
+      0 12px 48px rgba(255,77,148,0.22),
+      0 2px 0 rgba(255,255,255,0.9) inset,
+      0 -2px 0 rgba(255,100,170,0.15) inset;
+    max-width: min(480px, 84vw);
+    margin-bottom: clamp(120px, 24vw, 240px);
+    animation: cardAppear 0.8s cubic-bezier(0.34,1.56,0.64,1) both;
+  }
+  @keyframes cardAppear {
+    from { opacity:0; transform: scale(0.8) translateY(30px); }
+    to   { opacity:1; transform: scale(1) translateY(0); }
+  }
+
+  .deco-bow {
+    font-size: clamp(28px, 6vw, 48px);
+    margin-bottom: 8px;
+    display: block;
+    animation: bowSpin 4s ease-in-out infinite;
+  }
+  @keyframes bowSpin {
+    0%,100% { transform: rotate(-5deg) scale(1); }
+    50% { transform: rotate(5deg) scale(1.1); }
+  }
+
+  .main-title {
+    font-size: clamp(22px, 5.5vw, 38px);
+    font-weight: 700;
+    background: linear-gradient(135deg, #e0185a 0%, #ff4d94 50%, #c026a0 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 0.5px;
+    line-height: 1.35;
+    margin-bottom: 10px;
+    filter: drop-shadow(0 2px 6px rgba(255,77,148,0.25));
+  }
+  .main-sub {
+    font-size: clamp(13px, 2.8vw, 18px);
+    color: #b05080;
+    margin-bottom: 28px;
+    opacity: 0.85;
+  }
+
+  /* Buttons */
+  .btn-group {
+    display: flex; gap: 14px; justify-content: center; align-items: center;
+    flex-wrap: wrap;
+  }
+
+  #btn-yes {
+    background: linear-gradient(135deg, #ff4d94, #e0185a);
+    color: white;
+    border: none;
+    padding: clamp(12px,2.5vw,18px) clamp(24px,5vw,44px);
+    border-radius: 50px;
+    font-family: 'Mali', cursive;
+    font-size: clamp(15px, 3vw, 20px);
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 6px 24px rgba(255,77,148,0.45);
+    transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.4s, width 0.6s cubic-bezier(0.34,1.56,0.64,1), padding 0.5s, font-size 0.5s, border-radius 0.4s, position 0s;
+    position: relative;
+    z-index: 10;
+    white-space: nowrap;
+    letter-spacing: 0.5px;
+  }
+  #btn-yes:hover {
+    transform: scale(1.07);
+    box-shadow: 0 10px 32px rgba(255,77,148,0.55);
+  }
+  /* yes button grow stages — triggered by yesCount */
+  #btn-yes.yes-1 {
+    font-size: clamp(18px,3.8vw,24px) !important;
+    padding: clamp(15px,3vw,22px) clamp(32px,7vw,60px) !important;
+    box-shadow: 0 8px 32px rgba(255,77,148,0.6) !important;
+    animation: yesPulse 1s ease-in-out infinite;
+  }
+  #btn-yes.yes-2 {
+    font-size: clamp(24px,5.5vw,38px) !important;
+    padding: clamp(20px,4vw,30px) clamp(48px,10vw,90px) !important;
+    box-shadow: 0 10px 40px rgba(255,77,148,0.7) !important;
+    animation: yesPulse 0.8s ease-in-out infinite;
+  }
+  #btn-yes.yes-3 {
+    position: fixed !important;
+    top: 0 !important; left: 0 !important;
+    right: 0 !important; bottom: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    font-size: clamp(28px, 8vw, 64px) !important;
+    line-height: 1.4 !important;
+    padding: 0 24px !important;
+    white-space: normal !important;
+    word-break: keep-all !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    z-index: 9999 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    box-sizing: border-box !important;
+    animation: fullscreenYesPulse 0.9s ease-in-out infinite !important;
+  }
+  #btn-yes.level-4 {
+    position: fixed !important;
+    top: 0 !important; left: 0 !important;
+    right: 0 !important; bottom: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    font-size: clamp(28px, 8vw, 64px) !important;
+    line-height: 1.4 !important;
+    padding: 0 24px !important;
+    white-space: normal !important;
+    word-break: keep-all !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    z-index: 9999 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    box-sizing: border-box !important;
+    animation: fullscreenPulse 1.2s ease-in-out infinite !important;
+  }
+  @keyframes yesPulse {
+    0%,100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+  @keyframes fullscreenYesPulse {
+    0%,100% { box-shadow: 0 0 60px rgba(255,77,148,0.7); filter: brightness(1); }
+    50% { box-shadow: 0 0 120px rgba(255,77,148,1), 0 0 200px rgba(255,77,148,0.4); filter: brightness(1.1); }
+  }
+  #btn-yes.level-1 { font-size: clamp(17px,3.5vw,22px); padding: clamp(14px,2.8vw,20px) clamp(30px,6vw,52px); }
+  #btn-yes.level-2 { font-size: clamp(20px,4.2vw,28px); padding: clamp(16px,3.2vw,24px) clamp(36px,7vw,64px); }
+  #btn-yes.level-3 { font-size: clamp(24px,5vw,34px); padding: clamp(20px,4vw,30px) clamp(44px,9vw,80px); }
+  @keyframes fullscreenPulse {
+    0%,100% { box-shadow: 0 0 40px rgba(255,77,148,0.5); }
+    50% { box-shadow: 0 0 80px rgba(255,77,148,0.9), 0 0 160px rgba(255,77,148,0.3); }
+  }
+
+  #btn-no {
+    background: linear-gradient(135deg, #e8d5f5, #d4b8ef);
+    color: #7a5290;
+    border: 2px solid rgba(155,114,207,0.35);
+    padding: clamp(12px,2.5vw,18px) clamp(20px,4vw,36px);
+    border-radius: 50px;
+    font-family: 'Mali', cursive;
+    font-size: clamp(14px, 2.8vw, 18px);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative; z-index: 5;
+    white-space: nowrap;
+  }
+  #btn-no:hover {
+    background: linear-gradient(135deg, #d4b8ef, #c9a8e0);
+    transform: scale(0.97);
+  }
+
+  /* Hearts canvas */
+  #hearts-canvas {
+    position: fixed; inset: 0; pointer-events: none; z-index: 1;
+  }
+
+  /* ===================== PAGE 2 ===================== */
+  #page2 {
+    background: var(--ocean-dark);
+    overflow: hidden;
+  }
+
+  #bg-video {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: 0.65;
+    z-index: 0;
+  }
+
+  .ocean-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(10,8,32,0.35) 0%,
+      rgba(20,12,50,0.15) 40%,
+      rgba(26,16,64,0.2) 70%,
+      rgba(10,8,32,0.4) 100%
+    );
+    z-index: 1;
+  }
+
+  /* Stars */
+  .stars-container {
+    position: absolute; inset: 0; z-index: 1; overflow: hidden; pointer-events: none;
+  }
+  .star {
+    position: absolute; border-radius: 50%;
+    background: white;
+    animation: starTwinkle ease-in-out infinite;
+  }
+  @keyframes starTwinkle {
+    0%,100% { opacity: 0.2; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.4); }
+  }
+
+  /* Floating orbs */
+  .orb {
+    position: absolute; border-radius: 50%;
+    filter: blur(60px);
+    animation: orbDrift ease-in-out infinite;
+    pointer-events: none; z-index: 1;
+  }
+  @keyframes orbDrift {
+    0%,100% { transform: translate(0,0); opacity: 0.35; }
+    33% { transform: translate(30px,-20px); opacity: 0.55; }
+    66% { transform: translate(-20px,25px); opacity: 0.4; }
+  }
+
+  /* Profile card */
+  .profile-card {
+    position: relative; z-index: 10;
+    background: rgba(10, 6, 30, 0.45);
+    backdrop-filter: blur(6px) saturate(1.2);
+    -webkit-backdrop-filter: blur(6px) saturate(1.2);
+    border: 1px solid rgba(160,130,220,0.35);
+    border-radius: 28px;
+    padding: clamp(28px, 5vw, 52px) clamp(24px, 6vw, 64px);
+    max-width: min(600px, 94vw);
+    width: 100%;
+    box-shadow:
+      0 0 0 1px rgba(96,165,250,0.1),
+      0 8px 32px rgba(0,0,0,0.5),
+      0 0 60px rgba(96,165,250,0.06),
+      inset 0 1px 0 rgba(255,255,255,0.08);
+    text-align: center;
+    animation: cardSlideUp 1s cubic-bezier(0.34,1.56,0.64,1) both;
+  }
+  @keyframes cardSlideUp {
+    from { opacity:0; transform: translateY(50px) scale(0.92); }
+    to   { opacity:1; transform: translateY(0) scale(1); }
+  }
+
+  .wave-deco {
+    font-size: clamp(28px, 6vw, 46px);
+    margin-bottom: 4px;
+    display: block;
+    animation: waveHi 1.5s ease-in-out infinite;
+    transform-origin: 70% 70%;
+  }
+  @keyframes waveHi {
+    0%,100% { transform: rotate(0deg); }
+    25% { transform: rotate(20deg); }
+    75% { transform: rotate(-10deg); }
+  }
+
+  .greet-title {
+    font-size: clamp(20px, 5vw, 34px);
+    font-weight: 700;
+    background: linear-gradient(135deg, #c4b5fd, #818cf8, #60a5fa);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+
+  .divider {
+    width: 60px; height: 3px;
+    background: linear-gradient(90deg, #818cf8, #60a5fa);
+    border-radius: 999px;
+    margin: 12px auto 18px;
+    opacity: 0.7;
+  }
+
+  .info-block {
+    color: rgba(220, 210, 255, 0.92);
+    font-size: clamp(13px, 2.6vw, 16.5px);
+    line-height: 1.85;
+    font-weight: 400;
+    text-align: left;
+  }
+
+  .info-row {
+    display: flex; align-items: flex-start; gap: 10px;
+    margin-bottom: 12px;
+    padding: 10px 14px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 14px;
+    border: 1px solid rgba(130,100,200,0.15);
+    transition: background 0.3s, border-color 0.3s;
+  }
+  .info-row:hover {
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(130,100,200,0.35);
+  }
+  .info-icon { font-size: 20px; flex-shrink: 0; line-height: 1.6; }
+  .info-text { flex: 1; }
+
+  .game-tags {
+    display: flex; flex-wrap: wrap; gap: 7px; margin-top: 8px;
+  }
+  .tag {
+    padding: 4px 12px;
+    background: linear-gradient(135deg, rgba(129,140,248,0.25), rgba(96,165,250,0.2));
+    border: 1px solid rgba(129,140,248,0.3);
+    border-radius: 999px;
+    font-size: clamp(11px, 2vw, 13px);
+    color: #c4b5fd;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .footer-msg {
+    margin-top: 20px;
+    padding: 12px 16px;
+    background: linear-gradient(135deg, rgba(129,140,248,0.15), rgba(96,165,250,0.12));
+    border-radius: 16px;
+    border: 1px solid rgba(129,140,248,0.2);
+    color: rgba(196,181,253,0.9);
+    font-size: clamp(13px, 2.5vw, 15.5px);
+    font-weight: 600;
+    text-align: center;
+  }
+
+  /* Page 2 particles */
+  #page2-particles {
+    position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  }
+
+  /* Scrollable inner on small screens */
+  .page2-scroll {
+    position: relative; z-index: 10;
+    width: 100%;
+    max-height: 100vh;
+    overflow-y: auto;
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px 12px;
+    scrollbar-width: none;
+  }
+  .page2-scroll::-webkit-scrollbar { display: none; }
+</style>
+</head>
+<body>
+
+<!-- ===== HEARTS CANVAS (shared) ===== -->
+<canvas id="hearts-canvas"></canvas>
+
+<!-- ===== PAGE 1 ===== -->
+<div id="page1" class="page visible">
+  <div class="sparkle-bg" id="sparkle-bg"></div>
+
+  <!-- Top banner -->
+  <div class="top-deco">
+    <span class="top-deco-item">🎀</span>
+    <span class="top-deco-item">💖</span>
+    <span class="top-deco-item">⭐</span>
+    <span class="top-deco-item">🌸</span>
+    <span class="top-deco-item">✨</span>
+    <span class="top-deco-item">💜</span>
+    <span class="top-deco-item">🌸</span>
+    <span class="top-deco-item">⭐</span>
+    <span class="top-deco-item">💖</span>
+    <span class="top-deco-item">🎀</span>
+  </div>
+
+  <!-- Side floating icons -->
+  <div class="mini-deco">
+    <div class="mini-deco-side">
+      <span class="mini-icon">💕</span>
+      <span class="mini-icon">🌙</span>
+      <span class="mini-icon">⚡</span>
+    </div>
+    <div class="mini-deco-side">
+      <span class="mini-icon">🌺</span>
+      <span class="mini-icon">💫</span>
+      <span class="mini-icon">🎵</span>
+    </div>
+  </div>
+
+  <div class="char-container">
+    <!-- Keqing -->
+    <img class="char-img left" 
+      src="https://i.ibb.co/YFTw70Sj/Icon-Emoji-Paimon-s-Paintings-02-Keqing-2-1.png"
+      onerror="this.style.fontSize='clamp(70px,16vw,140px)';this.style.lineHeight='1';this.removeAttribute('src');this.textContent='⚡'"
+      alt="Keqing">
+    <!-- Ryne -->
+    <img class="char-img right"
+      src="https://i.ibb.co/spdBFp1c/C-a-Ryne.png"
+      onerror="this.style.fontSize='clamp(70px,16vw,140px)';this.style.lineHeight='1';this.removeAttribute('src');this.textContent='🌸'"
+      alt="Ryne">
+  </div>
+
+  <div class="main-card">
+    <span class="deco-bow">🎀</span>
+    <h1 class="main-title">สนใจทำความรู้จัก<br>กับเรามั้ยย!!</h1>
+    <p class="main-sub">✨ มาเป็นเพื่อนกันน้าา ✨</p>
+    <div class="btn-group">
+      <button id="btn-yes" onclick="handleYes()">💖 สนใจ</button>
+      <button id="btn-no" onclick="handleNo()">🌙 ไม่สนใจ</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE 2 ===== -->
+<div id="page2" class="page hidden">
+  <video id="bg-video" autoplay muted loop playsinline>
+    <source src="https://media.discordapp.net/attachments/747082798531346465/1483505676721324193/lv_0_20241202073831.mp4?ex=69bad5d3&is=69b98453&hm=ab98f4ecd09f89e14a1ee94cd46cddd14c989b40d1594e5c981299e486d2c29f&" type="video/mp4">
+  </video>
+  <!-- Sound toggle - starts ON -->
+  <button id="sound-btn" onclick="toggleSound()" style="
+    position:absolute; top:16px; right:16px; z-index:20;
+    background:rgba(255,255,255,0.12); border:1px solid rgba(160,130,220,0.4);
+    color:#c4b5fd; font-family:'Mali',cursive; font-size:clamp(12px,2vw,14px);
+    padding:8px 16px; border-radius:50px; cursor:pointer;
+    backdrop-filter:blur(10px); transition:all 0.3s;
+  ">🔊 ปิดเสียง</button>
+  <div class="ocean-overlay"></div>
+  <div class="stars-container" id="stars-container"></div>
+  <div id="page2-particles"></div>
+  <canvas id="orb-canvas" style="position:absolute;inset:0;z-index:1;pointer-events:none;"></canvas>
+
+  <div class="page2-scroll">
+    <div class="profile-card">
+      <img src="https://i.ibb.co/b5CY2Dkp/Bxsyx-WTE-400x400.png" alt="greeting" style="width:clamp(70px,14vw,110px);height:clamp(70px,14vw,110px);object-fit:contain;display:block;margin:0 auto 10px;filter:drop-shadow(0 4px 16px rgba(129,140,248,0.5));">
+      <h2 class="greet-title">เย้~ ยินดีที่ได้รู้จักน้าาาา💜</h2>
+      <div class="divider"></div>
+
+      <div class="info-block">
+        <div class="info-row">
+          <span class="info-icon">🐟</span>
+          <span class="info-text"><strong>เราชื่อ ทูน่า 💓</strong> — นิสัยชอบเก็บตัว ชอบเล่นเกม ฟังเพลงสากล และชอบวาดรูปมากๆ เลยย!</span>
+        </div>
+
+        <div class="info-row">
+          <span class="info-icon">🎮</span>
+          <div class="info-text">
+            <div style="margin-bottom:8px;color:#e0d7ff;font-weight:600;">อยู่ด้อมเกม:</div>
+            <div class="game-tags">
+              <span class="tag">⚔️ เกนชิน</span>
+              <span class="tag">🌟 ไอเดน</span>
+              <span class="tag">🏆 อาโอวี</span>
+              <span class="tag">📱 ตำนานมือถือ</span>
+              <span class="tag">🌠 รางดาว</span>
+              <span class="tag">🌸 วุว่า</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-row">
+          <span class="info-icon">🎌</span>
+          <span class="info-text">ติดอนิเมะมากกคุยได้ทุกเรื่องง มาคุยกันได้เลยนะะ!</span>
+        </div>
+      </div>
+
+      <div class="footer-msg">
+        💬 มาพูดคุยกับเราได้เยอะๆเลยนะะะ ~
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== SOUND TOGGLE =====
+function toggleSound() {
+  const video = document.getElementById('bg-video');
+  const btn = document.getElementById('sound-btn');
+  if (video.muted) {
+    video.muted = false;
+    video.volume = 0.7;
+    btn.textContent = '🔊 ปิดเสียง';
+  } else {
+    video.muted = true;
+    btn.textContent = '🔇 เปิดเสียง';
+  }
+}
+
+function autoPlaySound() {
+  const video = document.getElementById('bg-video');
+  const btn = document.getElementById('sound-btn');
+  // Try to unmute — browsers may block this if no prior interaction
+  // Since user clicked "สนใจ" button, interaction has occurred
+  video.muted = false;
+  video.volume = 0.7;
+  btn.textContent = '🔊 ปิดเสียง';
+  video.play().catch(() => {
+    // fallback: stay muted
+    video.muted = true;
+    btn.textContent = '🔇 เปิดเสียง';
+  });
+}
+
+// ===== HEART PARTICLES =====
+const heartsCanvas = document.getElementById('hearts-canvas');
+const ctx = heartsCanvas.getContext('2d');
+let hearts = [];
+heartsCanvas.width = window.innerWidth;
+heartsCanvas.height = window.innerHeight;
+window.addEventListener('resize', () => {
+  heartsCanvas.width = window.innerWidth;
+  heartsCanvas.height = window.innerHeight;
+});
+
+function createHeart(x, y) {
+  const colors = ['#ff4d94','#ff80b5','#e0185a','#c9a8e0','#f472b6','#fb7185'];
+  hearts.push({
+    x: x || Math.random() * window.innerWidth,
+    y: y || window.innerHeight + 20,
+    size: Math.random() * 14 + 8,
+    speedY: -(Math.random() * 2 + 1.2),
+    speedX: (Math.random() - 0.5) * 1.2,
+    opacity: Math.random() * 0.5 + 0.5,
+    color: colors[Math.floor(Math.random() * colors.length)],
+    wobble: Math.random() * Math.PI * 2,
+    wobbleSpeed: (Math.random() - 0.5) * 0.06
+  });
+}
+
+function drawHeart(cx, cy, size, color, opacity) {
+  ctx.save();
+  ctx.globalAlpha = opacity;
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  ctx.moveTo(cx, cy);
+  ctx.bezierCurveTo(cx, cy - size*0.3, cx - size*0.6, cy - size*0.7, cx - size*0.6, cy - size*0.35);
+  ctx.bezierCurveTo(cx - size*0.6, cy - size*0.9, cx + size*0.1, cy - size*1.05, cx, cy - size*0.65);
+  ctx.bezierCurveTo(cx - size*0.1, cy - size*1.05, cx + size*0.6, cy - size*0.9, cx + size*0.6, cy - size*0.35);
+  ctx.bezierCurveTo(cx + size*0.6, cy - size*0.7, cx, cy - size*0.3, cx, cy);
+  ctx.fill();
+  ctx.restore();
+}
+
+function animateHearts() {
+  ctx.clearRect(0, 0, heartsCanvas.width, heartsCanvas.height);
+  if (hearts.length < 18) createHeart();
+  hearts = hearts.filter(h => h.opacity > 0.05 && h.y > -60);
+  hearts.forEach(h => {
+    h.wobble += h.wobbleSpeed;
+    h.x += Math.sin(h.wobble) * 0.8 + h.speedX;
+    h.y += h.speedY;
+    h.opacity -= 0.003;
+    drawHeart(h.x, h.y, h.size, h.color, h.opacity);
+  });
+  requestAnimationFrame(animateHearts);
+}
+animateHearts();
+
+// Burst hearts on click (page1)
+document.getElementById('page1').addEventListener('click', function(e) {
+  for(let i=0;i<6;i++) createHeart(e.clientX + (Math.random()-0.5)*40, e.clientY);
+});
+
+// ===== SPARKLES =====
+const sparkleContainer = document.getElementById('sparkle-bg');
+const sparkleColors = ['#ff4d94','#ff80b5','#e040fb','#f8b4d0','#c084fc'];
+for(let i=0;i<28;i++) {
+  const s = document.createElement('div');
+  s.className = 'sparkle';
+  s.style.left = Math.random()*100+'%';
+  s.style.bottom = '-20px';
+  s.style.width = s.style.height = (Math.random()*8+5)+'px';
+  s.style.background = sparkleColors[Math.floor(Math.random()*sparkleColors.length)];
+  s.style.animationDuration = (Math.random()*8+6)+'s';
+  s.style.animationDelay = (Math.random()*10)+'s';
+  sparkleContainer.appendChild(s);
+}
+
+// Bubbles
+for(let i=0;i<14;i++) {
+  const b = document.createElement('div');
+  b.className = 'bubble';
+  const sz = Math.random()*30+15;
+  b.style.width = b.style.height = sz+'px';
+  b.style.left = Math.random()*100+'%';
+  b.style.bottom = '-60px';
+  b.style.animationDuration = (Math.random()*10+8)+'s';
+  b.style.animationDelay = (Math.random()*12)+'s';
+  sparkleContainer.appendChild(b);
+}
+
+// ===== BUTTON LOGIC =====
+let noCount = 0;
+let yesCount = 0;
+const btnYes = document.getElementById('btn-yes');
+const btnNo = document.getElementById('btn-no');
+
+function goToPage2() {
+  // Remove fullscreen overlay if exists
+  const overlay = document.getElementById('fullscreen-overlay');
+  if (overlay) overlay.remove();
+  // Hearts burst
+  for(let i=0;i<30;i++) createHeart(
+    Math.random()*window.innerWidth,
+    Math.random()*window.innerHeight
+  );
+  setTimeout(() => {
+    document.getElementById('page1').classList.replace('visible','hidden');
+    document.getElementById('page2').classList.replace('hidden','visible');
+    initPage2();
+    autoPlaySound();
+  }, 400);
+}
+
+function showFullscreenBtn(text) {
+  // Remove existing overlay
+  const old = document.getElementById('fullscreen-overlay');
+  if (old) old.remove();
+
+  const overlay = document.createElement('button');
+  overlay.id = 'fullscreen-overlay';
+  overlay.textContent = text;
+  overlay.onclick = goToPage2;
+  overlay.style.cssText = `
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    width: 100%; height: 100%;
+    background: linear-gradient(135deg, #ff4d94, #e0185a);
+    color: white; border: none; cursor: pointer;
+    font-family: 'Mali', cursive;
+    font-size: clamp(28px, 8vw, 56px);
+    font-weight: 700;
+    line-height: 1.4;
+    padding: 0 24px;
+    white-space: normal;
+    word-break: keep-all;
+    text-align: center;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 60px rgba(255,77,148,0.8);
+    animation: fullscreenPulse 1s ease-in-out infinite;
+  `;
+  document.body.appendChild(overlay);
+}
+
+function handleYes() {
+  yesCount++;
+
+  if (yesCount === 1) {
+    btnYes.className = 'yes-1';
+    btnYes.textContent = '😳 อยากรู้จักจริงๆ หรอ~';
+    for(let i=0;i<10;i++) createHeart(
+      btnYes.getBoundingClientRect().left + btnYes.offsetWidth/2 + (Math.random()-0.5)*60,
+      btnYes.getBoundingClientRect().top + (Math.random()-0.5)*30
+    );
+  } else if (yesCount === 2) {
+    btnYes.className = 'yes-2';
+    btnYes.textContent = '🥺 แน่ใจนะะ กดอีกทีเลย!';
+    for(let i=0;i<10;i++) createHeart(
+      btnYes.getBoundingClientRect().left + btnYes.offsetWidth/2 + (Math.random()-0.5)*60,
+      btnYes.getBoundingClientRect().top + (Math.random()-0.5)*30
+    );
+  } else {
+    // Stage 3+ → fullscreen overlay
+    showFullscreenBtn('💗 คลิกเพื่อมาเป็นเพื่อนกันน');
+  }
+}
+
+function handleNo() {
+  // Remove fullscreen overlay if showing
+  const overlay = document.getElementById('fullscreen-overlay');
+  if (overlay) overlay.remove();
+
+  noCount = Math.min(noCount + 1, 4);
+  yesCount = 0;
+  btnYes.className = '';
+  btnYes.textContent = '💖 สนใจ';
+
+  if (noCount >= 4) {
+    btnNo.style.display = 'none';
+    showFullscreenBtn('💖 คลิกเพื่อมาเป็นเพื่อนกันน');
+    for(let i=0;i<20;i++) createHeart(window.innerWidth/2 + (Math.random()-0.5)*200, window.innerHeight/2);
+    return;
+  }
+
+  if (noCount >= 1) btnYes.classList.add('level-' + noCount);
+
+  btnNo.style.animation = 'none';
+  btnNo.offsetHeight;
+  btnNo.style.animation = 'shakeNo 0.3s ease';
+}
+
+// Add shake animation
+const shakeStyle = document.createElement('style');
+shakeStyle.textContent = `@keyframes shakeNo {
+  0%,100%{transform:translateX(0)rotate(0deg)}
+  20%{transform:translateX(-6px)rotate(-3deg)}
+  40%{transform:translateX(6px)rotate(3deg)}
+  60%{transform:translateX(-4px)rotate(-2deg)}
+  80%{transform:translateX(4px)rotate(2deg)}
+}`;
+document.head.appendChild(shakeStyle);
+
+// ===== PAGE 2 INIT =====
+function initPage2() {
+  // Stars
+  const starsEl = document.getElementById('stars-container');
+  if(starsEl.children.length) return;
+  for(let i=0;i<130;i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const sz = Math.random()*2.5+0.5;
+    s.style.width = s.style.height = sz+'px';
+    s.style.left = Math.random()*100+'%';
+    s.style.top = Math.random()*100+'%';
+    s.style.animationDuration = (Math.random()*4+2)+'s';
+    s.style.animationDelay = (Math.random()*5)+'s';
+    starsEl.appendChild(s);
+  }
+
+  // Floating orbs
+  const orbCanvas = document.getElementById('orb-canvas');
+  orbCanvas.width = window.innerWidth;
+  orbCanvas.height = window.innerHeight;
+  const octx = orbCanvas.getContext('2d');
+
+  const orbs = [
+    { x: window.innerWidth*0.15, y: window.innerHeight*0.3, r: 200, color: '#4c1d95', dx:0.3, dy:0.15 },
+    { x: window.innerWidth*0.85, y: window.innerHeight*0.7, r: 250, color: '#1e3a8a', dx:-0.2, dy:0.2 },
+    { x: window.innerWidth*0.5,  y: window.innerHeight*0.1, r: 180, color: '#312e81', dx:0.15, dy:0.3 },
+  ];
+
+  function drawOrbs() {
+    octx.clearRect(0,0,orbCanvas.width,orbCanvas.height);
+    orbs.forEach(o => {
+      o.x += o.dx; o.y += o.dy;
+      if(o.x < 0 || o.x > orbCanvas.width) o.dx *= -1;
+      if(o.y < 0 || o.y > orbCanvas.height) o.dy *= -1;
+      const g = octx.createRadialGradient(o.x,o.y,0,o.x,o.y,o.r);
+      g.addColorStop(0, o.color+'bb');
+      g.addColorStop(1, 'transparent');
+      octx.fillStyle = g;
+      octx.beginPath();
+      octx.arc(o.x,o.y,o.r,0,Math.PI*2);
+      octx.fill();
+    });
+    requestAnimationFrame(drawOrbs);
+  }
+  drawOrbs();
+
+  // Floating sparkles on page2
+  const p2p = document.getElementById('page2-particles');
+  const p2canvas = document.createElement('canvas');
+  p2canvas.style.cssText='position:absolute;inset:0;width:100%;height:100%;pointer-events:none;';
+  p2canvas.width = window.innerWidth; p2canvas.height = window.innerHeight;
+  p2p.appendChild(p2canvas);
+  const p2ctx = p2canvas.getContext('2d');
+  const glitters = Array.from({length:40}, () => ({
+    x: Math.random()*window.innerWidth,
+    y: Math.random()*window.innerHeight,
+    size: Math.random()*3+1,
+    opacity: Math.random(),
+    speed: Math.random()*0.015+0.005,
+    phase: Math.random()*Math.PI*2,
+    color: ['#818cf8','#60a5fa','#c4b5fd','#e0d7ff'][Math.floor(Math.random()*4)]
+  }));
+
+  function animateGlitters() {
+    p2ctx.clearRect(0,0,p2canvas.width,p2canvas.height);
+    glitters.forEach(g => {
+      g.phase += g.speed;
+      const op = (Math.sin(g.phase)+1)/2 * 0.8;
+      p2ctx.globalAlpha = op;
+      p2ctx.fillStyle = g.color;
+      p2ctx.beginPath();
+      p2ctx.arc(g.x,g.y,g.size,0,Math.PI*2);
+      p2ctx.fill();
+    });
+    p2ctx.globalAlpha=1;
+    requestAnimationFrame(animateGlitters);
+  }
+  animateGlitters();
+}
+</script>
+</body>
+</html>
